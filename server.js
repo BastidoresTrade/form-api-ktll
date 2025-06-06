@@ -49,18 +49,23 @@ app.post('/enviar-email', async (req, res) => {
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+      },
+      // Configurar o e-mail do remetente para ser o mesmo do usuário
+      default: {
+        from: process.env.EMAIL_USER
       }
     });
 
     await transporter.sendMail({
-      from: `${name} <${email}>`,
+      from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: subject || 'Nova mensagem do site',
       html: `
         <p><strong>Nome:</strong> ${name}</p>
-        <p><strong>E-mail:</strong> ${email}</p>
+        <p><strong>E-mail do remetente:</strong> ${email}</p>
         <p><strong>Assunto:</strong> ${subject || 'Não informado'}</p>
         <p><strong>Mensagem:</strong><br/>${message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
+        <p><strong>Enviado por:</strong> ${name} (${email})</p>
       `
     });
 
