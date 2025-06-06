@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "API para envio de formulário de contato",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
@@ -15,5 +16,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "license": "ISC"
 }
