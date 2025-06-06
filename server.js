@@ -70,13 +70,27 @@ app.post('/enviar-email', async (req, res) => {
     };
 
     // Enviar o e-mail
-    await transporter.sendMail(emailOptions);
-    });
-
-    res.status(200).json({ 
-      status: 'success', 
-      message: 'E-mail enviado com sucesso!' 
-    });
+    await transporter.sendMail(emailOptions)
+      .then(() => {
+        res.status(200).json({ 
+          status: 'success', 
+          message: 'E-mail enviado com sucesso!' 
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao enviar e-mail:', error);
+        res.status(500).json({ 
+          status: 'error', 
+          message: 'Erro ao enviar o e-mail.' 
+        });
+      });
+    } catch (error) {
+      console.error('Erro no processamento:', error);
+      res.status(500).json({ 
+        status: 'error', 
+        message: 'Erro no processamento do formulário.' 
+      });
+    }
   } catch (err) {
     console.error('Erro ao enviar e-mail:', err);
     res.status(500).json({ 
