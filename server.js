@@ -50,13 +50,13 @@ app.post('/enviar-email', async (req, res) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
       },
-      // Configurar o e-mail do remetente para ser o mesmo do usuário
       default: {
         from: process.env.EMAIL_USER
       }
     });
 
-    await transporter.sendMail({
+    // Preparar o conteúdo do e-mail
+    const emailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: subject || 'Nova mensagem do site',
@@ -67,6 +67,10 @@ app.post('/enviar-email', async (req, res) => {
         <p><strong>Mensagem:</strong><br/>${message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>
         <p><strong>Enviado por:</strong> ${name} (${email})</p>
       `
+    };
+
+    // Enviar o e-mail
+    await transporter.sendMail(emailOptions);
     });
 
     res.status(200).json({ 
